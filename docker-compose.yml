@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  web:
+    networks: 
+      - inttest
+    build: ./webapp
+    environment:
+      - ConnectionStrings__DbConnection=Server=sqlserver,1433\sql;Database=AppPoc.Dev;user id=sa;password=2019#Integration;MultipleActiveResultSets=true      
+    ports:
+      - "8088:80"
+    depends_on:
+      - sqlserver
+  sqlserver:
+    networks:
+      - inttest
+    image:  mcr.microsoft.com/mssql/server
+    environment:
+      - SA_PASSWORD=2019#Integration
+      - ACCEPT_EULA=Y
+    ports:
+      - "1434:1433"
+  e2e:
+    networks: 
+      - inttest
+    image: cypress
+    build: ./e2e
+    depends_on: 
+      - web
+    environment: 
+      - CYPRESS_baseUrl=http://web:80
+    command: npx cypress run
+    volumes:
+      - ./e2e/cypress:/app/cypress
+      - ./e2e/cypress.json:/app/cypress.json
+
+networks:
+  inttest:

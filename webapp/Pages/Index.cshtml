@@ -1,0 +1,37 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<h2>People</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Street</th>
+        <th>City</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var person in Model.People)
+    {
+        <tr>
+            
+        <td>@person.FirstName</td>
+        <td>@person.LastName</td>
+        <td>@person.Street</td>
+        <td>@person.City</td>
+        </tr>
+    }
+    </tbody>
+
+</table>
+<form method="post">
+    <label for="firstName">FirstName</label><input id="firstName" asp-for="AddPerson.FirstName">
+    <label for="lastName">LastName</label><input id="lastName" asp-for="AddPerson.LastName">
+    <label for="street">Street</label><input id="street" asp-for="AddPerson.Street">
+    <label for="city">City</label><input id="city" asp-for="AddPerson.City">
+    <button>Add</button>
+</form>
